@@ -18,6 +18,11 @@
             format="color"
             />
 
+        <attr
+            name="shape"
+            format="string"
+            />
+
     </declare-styleable>
 
 </resources>

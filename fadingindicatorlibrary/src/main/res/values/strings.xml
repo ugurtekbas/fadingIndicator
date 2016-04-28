@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FadingIndicatorLibrary</string>
+    <string name="shape_rect">rectangle</string>
+    <string name="shape_circle">circle</string>
 </resources>

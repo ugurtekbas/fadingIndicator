@@ -12,8 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Classic rounded viewpager indicators with fading effects.
- * Created by ugurtekbas on 10/02/16.
+ * Classic viewpager indicators with fading effects.
+ * Created by ugurtekbas.
  */
 public class FadingIndicator extends View implements ViewPager.OnPageChangeListener{
 
@@ -29,9 +29,13 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     private static final int SPACING_FACTOR = 1;
     private float radius = 30f;
     private float calculatedRadius,constantRadius,previousRadius;
+    private String shape="",circle,rectangle;
 
     public FadingIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
+        circle = getContext().getString(R.string.shape_circle);
+        rectangle = getContext().getString(R.string.shape_rect);
+
         TypedArray attributes = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.FadingIndicator,
@@ -41,6 +45,9 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
             radius = attributes.getDimension(R.styleable.FadingIndicator_radius, radius);
             fillColor = attributes.getColor(R.styleable.FadingIndicator_fillColor, Color.DKGRAY);
             strokeColor = attributes.getColor(R.styleable.FadingIndicator_strokeColor, Color.BLACK);
+            if(attributes.getString(R.styleable.FadingIndicator_shape) != null){
+                shape = attributes.getString(R.styleable.FadingIndicator_shape);
+            }
         } finally {
             attributes.recycle();
         }
@@ -62,32 +69,47 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         fillPaint.setColor(fillColor);
         strokePaint.setColor(strokeColor);
 
         float x, y;
-        for (int i = 0;i < numberOfItems;i++) {
+        for (int i = 0;i < numberOfItems; i++) {
             //coordinates of circles
-            x = ( i * SELECTED_FACTOR * radius) + ( i * ( radius )) + (radius * SELECTED_FACTOR);
+            x = (i * SELECTED_FACTOR * radius) + (i * radius) + (radius * SELECTED_FACTOR);
             y = radius * SELECTED_FACTOR;
 
-            if(i == activeItem){
+            if (i == activeItem) {
                 //if its on initial state
-                if(previouslyActiveItem == 99){
-                    canvas.drawCircle(x,y,(calculatedRadius * SELECTED_FACTOR),fillPaint);
-                    canvas.drawCircle(x,y,(calculatedRadius * SELECTED_FACTOR),strokePaint);
+                if (previouslyActiveItem == 99){
+                    drawIndicators(canvas, x, y, (calculatedRadius * SELECTED_FACTOR));
                 }else{
-                    canvas.drawCircle(x,y,(calculatedRadius),fillPaint);
-                    canvas.drawCircle(x,y,(calculatedRadius),strokePaint);
+                    drawIndicators(canvas, x, y, calculatedRadius);
                 }
             }else if( i == previouslyActiveItem){
-                canvas.drawCircle(x,y,(previousRadius),fillPaint);
-                canvas.drawCircle(x,y,(previousRadius),strokePaint);
+                drawIndicators(canvas, x, y, previousRadius);
             }else{
-                canvas.drawCircle(x,y, constantRadius,fillPaint);
-                canvas.drawCircle(x,y, constantRadius,strokePaint);
+                drawIndicators(canvas, x, y, constantRadius);
             }
+        }
+    }
+
+    public void drawIndicators(Canvas canvas, float coordinateX, float coordinateY, float calculatedSize) {
+        if (shape.equals(rectangle)) {
+            canvas.drawRect(
+                    coordinateX - (calculatedSize),
+                    coordinateY - (calculatedSize),
+                    coordinateX + (calculatedSize),
+                    coordinateY + (calculatedSize),
+                    fillPaint);
+            canvas.drawRect(
+                    coordinateX - (calculatedSize),
+                    coordinateY - (calculatedSize),
+                    coordinateX + (calculatedSize),
+                    coordinateY + (calculatedSize),
+                    strokePaint);
+        }else{
+            canvas.drawCircle(coordinateX, coordinateY, calculatedSize, fillPaint);
+            canvas.drawCircle(coordinateX, coordinateY, calculatedSize, strokePaint);
         }
     }
 
@@ -191,4 +213,12 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         return this.strokeColor;
     }
 
+    public String getShape() {
+        return this.shape;
+    }
+
+    public void setShape(String shape) {
+        this.shape = shape;
+        this.invalidate();
+    }
 }
