@@ -3,12 +3,30 @@ A simple indicator with fading animation for ViewPager in Android.
 <br>
 Most of the existing indicators don’t provide a smooth transition, this library fades indicators in and out when pager flipped.
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-fadingIndicator-green.svg?style=true)](https://android-arsenal.com/details/1/3505)
+
 <H2>Images</H2>
 <img width="270px" height="480" src="/images/1.gif" />
 <img width="270px" height="480" src="/images/2.png" />
 <br>
 
 <H2>Usage</H2>
+Gradle Import:
+
+Add the specific repository to your build file:
+```groovy
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+```
+Add the dependency in your build file (do not forget to specify the correct qualifier, usually 'aar'):
+```groovy
+dependencies {
+    compile 'com.github.ugurtekbas:fadingIndicator:abe516e049'
+}
+```
 
 ```xml
 
