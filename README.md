@@ -24,7 +24,7 @@ repositories {
 Add the dependency in your build file (do not forget to specify the correct qualifier, usually 'aar'):
 ```groovy
 dependencies {
-    compile 'com.github.ugurtekbas:fadingIndicator:abe516e049'
+    compile 'com.github.ugurtekbas:fadingIndicator:623a5c62ff'
 }
 ```
 
