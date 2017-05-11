@@ -13,7 +13,7 @@ import android.view.View;
 
 /**
  * Classic viewpager indicators with fading effects.
- * Created by ugurtekbas.
+ * Created by Ugur Tekbas.
  */
 public class FadingIndicator extends View implements ViewPager.OnPageChangeListener{
 
