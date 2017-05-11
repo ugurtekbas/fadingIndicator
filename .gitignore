@@ -1,0 +1,13 @@
+#gradle folder
+.gradle
+/local.properties
+.DS_STORE
+/build
+/captures
+
+#Intellij files
+*.iml
+.idea/
+
+#Java class files
+*.class
