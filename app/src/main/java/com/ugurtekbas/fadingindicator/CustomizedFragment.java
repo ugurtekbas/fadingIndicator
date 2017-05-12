@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 
 /**
  * Fragment to use customized indicators.
- * Created by ugurtekbas.
+ * Created by Ugur Tekbas
  */
 public class CustomizedFragment extends Fragment {
 

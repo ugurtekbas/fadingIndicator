@@ -5,20 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ugurtekbas.fadingindicatorlibrary.FadingIndicator;
+import com.ugurtekbas.fadingindicatorlibrary.PageChangedListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Fragment to use default state of indicators.
- * Created by ugurtekbas.
+ * Created by Ugur Tekbas
  */
-public class DefaultFragment extends Fragment {
+public class DefaultFragment extends Fragment implements PageChangedListener{
 
     private DefaultAdapter adapter;
     @Bind(R.id.viewpagerDefault) ViewPager viewpagerDefault;
@@ -50,7 +52,13 @@ public class DefaultFragment extends Fragment {
         adapter = new DefaultAdapter(getContext(),pics);
         viewpagerDefault.setAdapter(adapter);
         indicator.setViewPager(viewpagerDefault);
+        indicator.setPageListener(this);
 
         return fragmentView;
+    }
+
+    @Override
+    public void onPageFlipped(int pageIndex) {
+        Log.i("Page is flipped ", "page index:"+ pageIndex);
     }
 }

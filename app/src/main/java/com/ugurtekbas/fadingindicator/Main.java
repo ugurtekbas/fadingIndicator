@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 
 /**
  * Main activity to host fragments.
+ * Created by Ugur Tekbas
  */
 public class Main extends AppCompatActivity {
 

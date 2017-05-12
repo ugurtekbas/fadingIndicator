@@ -13,7 +13,7 @@ import android.view.View;
 
 /**
  * Classic viewpager indicators with fading effects.
- * Created by Ugur Tekbas.
+ * @author Ugur Tekbas
  */
 public class FadingIndicator extends View implements ViewPager.OnPageChangeListener{
 
@@ -30,6 +30,7 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     private float radius = 30f;
     private float calculatedRadius,constantRadius,previousRadius;
     private String shape="",circle,rectangle;
+    private PageChangedListener pageListener;
 
     public FadingIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -170,6 +171,9 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         }
         //desiredRadius is always size of active indicator
         setActiveItem(position, constantRadius * SELECTED_FACTOR);
+        if(pageListener != null){
+            pageListener.onPageFlipped(position);
+        }
     }
 
     @Override
@@ -232,5 +236,13 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     public void setShape(String shape) {
         this.shape = shape;
         this.invalidate();
+    }
+
+    public PageChangedListener getPageListener() {
+        return pageListener;
+    }
+
+    public void setPageListener(PageChangedListener pageListener) {
+        this.pageListener = pageListener;
     }
 }
