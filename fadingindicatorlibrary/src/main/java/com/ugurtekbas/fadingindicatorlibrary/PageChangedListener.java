@@ -8,6 +8,11 @@ package com.ugurtekbas.fadingindicatorlibrary;
 
 public interface PageChangedListener {
 
+    /**
+     * This method will be invoked when a new page becomes active, when user slides
+     * from one page to another
+     * @param pageIndex position of the active page on list of pages
+     */
     void onPageFlipped(int pageIndex);
 
 }
