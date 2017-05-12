@@ -36,21 +36,7 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         circle = getContext().getString(R.string.shape_circle);
         rectangle = getContext().getString(R.string.shape_rect);
 
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.FadingIndicator,
-                0, 0);
-
-        try {
-            radius = attributes.getDimension(R.styleable.FadingIndicator_radius, radius);
-            fillColor = attributes.getColor(R.styleable.FadingIndicator_fillColor, Color.DKGRAY);
-            strokeColor = attributes.getColor(R.styleable.FadingIndicator_strokeColor, Color.BLACK);
-            if(attributes.getString(R.styleable.FadingIndicator_shape) != null){
-                shape = attributes.getString(R.styleable.FadingIndicator_shape);
-            }
-        } finally {
-            attributes.recycle();
-        }
+        loadAttributes(attrs);
 
         fillPaint.setAntiAlias(true);
         fillPaint.setStyle(Paint.Style.FILL);
@@ -65,6 +51,32 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         calculatedRadius = (radius / 10) * 6;
         //size of inactive indicator
         constantRadius = calculatedRadius;
+    }
+
+    /**
+     * Sets indicators' attributes from xml file
+     * @param attrs
+     */
+    private void loadAttributes(AttributeSet attrs) {
+        if (attrs == null) return;
+
+        TypedArray attributes = getContext().getTheme().obtainStyledAttributes(
+            attrs,
+            R.styleable.FadingIndicator,
+            0, 0
+        );
+
+        if(attributes == null) return;
+        try {
+            setRadius(attributes.getDimension(R.styleable.FadingIndicator_radius, radius));
+            setFillColor(attributes.getColor(R.styleable.FadingIndicator_fillColor, Color.DKGRAY));
+            setStrokeColor(attributes.getColor(R.styleable.FadingIndicator_strokeColor, Color.BLACK));
+            if(attributes.getString(R.styleable.FadingIndicator_shape) != null){
+                setShape(attributes.getString(R.styleable.FadingIndicator_shape));
+            }
+        } finally {
+            attributes.recycle();
+        }
     }
 
     @Override
