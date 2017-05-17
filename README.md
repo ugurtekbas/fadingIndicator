@@ -47,7 +47,7 @@ dependencies {
         app:radius="10dp"
         app:fillColor="#56B6BF"
         app:strokeColor="#FC823B"
-        app:shape="rectangle"
+        app:shape="Rectangle"
         />
 ```
 
@@ -64,7 +64,7 @@ indicator.setStrokeColor(Color.CYAN);
 //Set radius of indicator
 indicator.setRadius(40f);
 //Set shape of indicator
-indicator.setShape("rectangle");
+indicator.setShape(Shapes.Rectangle);
 //Set page changed listener
 indicator.setPageListener(this);
 
