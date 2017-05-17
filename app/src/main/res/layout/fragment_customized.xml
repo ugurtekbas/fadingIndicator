@@ -23,7 +23,7 @@
         app:radius="10dp"
         app:fillColor="@color/strokeColor"
         app:strokeColor="@color/colorPrimary"
-        app:shape="rectangle"
+        app:shape="Rectangle"
         />
 
 </RelativeLayout>
