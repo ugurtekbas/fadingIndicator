@@ -17,6 +17,19 @@ import android.view.View;
  */
 public class FadingIndicator extends View implements ViewPager.OnPageChangeListener{
 
+    public enum Shapes {
+        Circle(0),
+        Rectangle(1);
+
+        private int shapeValue;
+        private Shapes(int value) {
+            this.shapeValue = value;
+        }
+
+        private int getShape(){
+            return this.shapeValue;
+        }
+    }
     private Paint fillPaint = new Paint();
     private Paint strokePaint = new Paint();
     private ViewPager viewPager;
@@ -29,14 +42,11 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     private static final int SPACING_FACTOR = 1;
     private float radius = 30f;
     private float calculatedRadius,constantRadius,previousRadius;
-    private String shape="",circle,rectangle;
+    private Shapes shape;
     private PageChangedListener pageListener;
 
     public FadingIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
-        circle = getContext().getString(R.string.shape_circle);
-        rectangle = getContext().getString(R.string.shape_rect);
-
         loadAttributes(attrs);
 
         fillPaint.setAntiAlias(true);
@@ -72,9 +82,8 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
             setRadius(attributes.getDimension(R.styleable.FadingIndicator_radius, radius));
             setFillColor(attributes.getColor(R.styleable.FadingIndicator_fillColor, Color.DKGRAY));
             setStrokeColor(attributes.getColor(R.styleable.FadingIndicator_strokeColor, Color.BLACK));
-            if(attributes.getString(R.styleable.FadingIndicator_shape) != null){
-                setShape(attributes.getString(R.styleable.FadingIndicator_shape));
-            }
+            setShape(getShapeValue(attributes.getInteger(R.styleable.FadingIndicator_shape, Shapes.Circle.getShape())));
+
         } finally {
             attributes.recycle();
         }
@@ -107,7 +116,7 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     }
 
     public void drawIndicators(Canvas canvas, float coordinateX, float coordinateY, float calculatedSize) {
-        if (shape.equals(rectangle)) {
+        if (shape.equals(Shapes.Rectangle)) {
             canvas.drawRect(
                     coordinateX - (calculatedSize),
                     coordinateY - (calculatedSize),
@@ -229,11 +238,11 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         return this.strokeColor;
     }
 
-    public String getShape() {
+    public Shapes getShape() {
         return this.shape;
     }
 
-    public void setShape(String shape) {
+    public void setShape(Shapes shape) {
         this.shape = shape;
         this.invalidate();
     }
@@ -244,5 +253,22 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
 
     public void setPageListener(PageChangedListener pageListener) {
         this.pageListener = pageListener;
+    }
+
+    public Shapes getShapeValue(int inValue){
+        Shapes mShape;
+        switch (inValue){
+            case 0:
+                mShape = Shapes.Circle;
+                break;
+            case 1:
+                mShape = Shapes.Rectangle;
+                break;
+            default:
+                mShape = Shapes.Circle;
+                break;
+        }
+
+        return mShape;
     }
 }

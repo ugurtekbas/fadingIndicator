@@ -18,11 +18,13 @@
             format="color"
             />
 
-        <attr
-            name="shape"
-            format="string"
-            />
+        <attr name="shape" format="enum">
+            <enum name="Circle" value="0"/>
+            <enum name="Rectangle" value="1"/>
+        </attr>
 
     </declare-styleable>
+
+
 
 </resources>
