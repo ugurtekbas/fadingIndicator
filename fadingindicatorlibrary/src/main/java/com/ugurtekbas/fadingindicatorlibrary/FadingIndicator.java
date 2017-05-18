@@ -12,9 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import static com.ugurtekbas.fadingindicatorlibrary.FadingIndicator.Shapes.Rectangle;
-import static com.ugurtekbas.fadingindicatorlibrary.FadingIndicator.Shapes.Triangle;
+import java.util.ArrayList;
 
 /**
  * Classic viewpager indicators with fading effects.
@@ -25,7 +23,8 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     public enum Shapes {
         Circle(0),
         Rectangle(1),
-        Triangle(2);
+        Triangle(2),
+        InvertedTriangle(3);
 
         private int shapeValue;
         private Shapes(int value) {
@@ -130,26 +129,14 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         if(shape.equals(Shapes.Rectangle)){
             canvas.drawRect(left, top, right, bottom, fillPaint);
             canvas.drawRect(left, top, right, bottom, strokePaint);
-        }else if(shape.equals(Shapes.Triangle)){
-            //Creates points of the triangle
-            Point pBegining = new Point((int)coordinateX, (int)bottom);
-            Point pRightBottom = new Point((int)right, (int)bottom);
-            Point pTop = new Point((int)coordinateX, (int)top);
-            Point pLeftBottom = new Point((int)left, (int)bottom);
-
-            Path path = new Path();
-            //Move to middle of the triangle at the bottom
-            path.moveTo(pBegining.x, pBegining.y);
-            //Draw the bottom line
-            path.lineTo(pRightBottom.x, pRightBottom.y);
-            //Draw through top
-            path.lineTo(pTop.x, pTop.y);
-            //Complete by drawing through bottom
-            path.lineTo(pLeftBottom.x, pLeftBottom.y);
-            path.close();
-
-            canvas.drawPath(path, fillPaint);
-            canvas.drawPath(path, strokePaint);
+        }else if(shape.equals(Shapes.Triangle)) {
+            Path trianglePath = getTrianglePath((int) coordinateX, (int) left, (int) top, (int) right, (int) bottom);
+            canvas.drawPath(trianglePath, fillPaint);
+            canvas.drawPath(trianglePath, strokePaint);
+        }else if(shape.equals(Shapes.InvertedTriangle)){
+            Path invertedPath = getInvertedTrianglePath((int) coordinateX, (int) left, (int) top, (int) right, (int) bottom);
+            canvas.drawPath(invertedPath, fillPaint);
+            canvas.drawPath(invertedPath, strokePaint);
         }else{
             canvas.drawCircle(coordinateX, coordinateY, calculatedSize, fillPaint);
             canvas.drawCircle(coordinateX, coordinateY, calculatedSize, strokePaint);
@@ -283,10 +270,13 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
                 mShape = Shapes.Circle;
                 break;
             case 1:
-                mShape = Rectangle;
+                mShape = Shapes.Rectangle;
                 break;
             case 2:
-                mShape = Triangle;
+                mShape = Shapes.Triangle;
+                break;
+            case 3:
+                mShape = Shapes.InvertedTriangle;
                 break;
             default:
                 mShape = Shapes.Circle;
@@ -294,5 +284,77 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
         }
 
         return mShape;
+    }
+
+    /**
+     * Creates a point list to draw triangle triangle and returns related path
+     * @param inX starting X coordinate
+     * @param left negative X coordinate
+     * @param top positive Y coordinate
+     * @param right positive X coordinate
+     * @param bottom negative Y coordinate
+     * @return path object which represent triangle
+     */
+    public Path getTrianglePath(int inX, int left, int top, int right, int bottom){
+        ArrayList<Point>   pointList = new ArrayList();
+        //Creates points of the triangle
+        Point pBeginning    = new Point(inX, bottom);
+        //Move to bottom of the triangle
+        pointList.add(pBeginning);
+        Point pRightBottom  = new Point(right, bottom);
+        //Draw the bottom line
+        pointList.add(pRightBottom);
+        Point pTop          = new Point(inX, top);
+        //Draw through top
+        pointList.add(pTop);
+        Point pLeftBottom   = new Point(left, bottom);
+        //Complete by drawing through bottom
+        pointList.add(pLeftBottom);
+
+        return getNewPath(pointList);
+    }
+
+    /**
+     * Creates a point list to draw a inverted (upside-down) triangle and returns related path
+     * @param inX starting X coordinate
+     * @param left negative X coordinate
+     * @param top positive Y coordinate
+     * @param right positive X coordinate
+     * @param bottom negative Y coordinate
+     * @return path object which represent inverted triangle
+     */
+    public Path getInvertedTrianglePath(int inX, int left, int top, int right, int bottom){
+        ArrayList<Point>   pointList = new ArrayList();
+        //Creates points of the triangle
+        Point pBeginning    = new Point(inX, top);
+        pointList.add(pBeginning);
+        Point pLeftTop      = new Point(left, top);
+        pointList.add(pLeftTop);
+        Point pBottom       = new Point(inX, bottom);
+        pointList.add(pBottom);
+        Point pRightTop     = new Point(right, top);
+        pointList.add(pRightTop);
+
+        return getNewPath(pointList);
+    }
+
+    /**
+     * Creates a new path and draw lines between with given coordinates
+     * First coordinates is assumed the starting point of the path
+     * @param pCoordinates list contains points of the path
+     * @return path with lines between the given coordinates
+     */
+    public Path getNewPath(ArrayList<Point> pCoordinates){
+        Path path = new Path();
+        if(pCoordinates.isEmpty()) return path;
+
+        path.moveTo(pCoordinates.get(0).x ,pCoordinates.get(0).y);
+        pCoordinates.remove(0);
+        for(Point p : pCoordinates){
+            path.lineTo(p.x, p.y);
+        }
+        path.close();
+
+        return path;
     }
 }
