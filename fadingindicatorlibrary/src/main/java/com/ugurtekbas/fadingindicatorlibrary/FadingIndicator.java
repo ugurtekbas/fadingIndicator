@@ -6,10 +6,15 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import static com.ugurtekbas.fadingindicatorlibrary.FadingIndicator.Shapes.Rectangle;
+import static com.ugurtekbas.fadingindicatorlibrary.FadingIndicator.Shapes.Triangle;
 
 /**
  * Classic viewpager indicators with fading effects.
@@ -19,7 +24,8 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
 
     public enum Shapes {
         Circle(0),
-        Rectangle(1);
+        Rectangle(1),
+        Triangle(2);
 
         private int shapeValue;
         private Shapes(int value) {
@@ -116,19 +122,34 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
     }
 
     public void drawIndicators(Canvas canvas, float coordinateX, float coordinateY, float calculatedSize) {
-        if (shape.equals(Shapes.Rectangle)) {
-            canvas.drawRect(
-                    coordinateX - (calculatedSize),
-                    coordinateY - (calculatedSize),
-                    coordinateX + (calculatedSize),
-                    coordinateY + (calculatedSize),
-                    fillPaint);
-            canvas.drawRect(
-                    coordinateX - (calculatedSize),
-                    coordinateY - (calculatedSize),
-                    coordinateX + (calculatedSize),
-                    coordinateY + (calculatedSize),
-                    strokePaint);
+        float left      = coordinateX - calculatedSize;
+        float top       = coordinateY - calculatedSize;
+        float right     = coordinateX + calculatedSize;
+        float bottom    = coordinateY + calculatedSize;
+
+        if(shape.equals(Shapes.Rectangle)){
+            canvas.drawRect(left, top, right, bottom, fillPaint);
+            canvas.drawRect(left, top, right, bottom, strokePaint);
+        }else if(shape.equals(Shapes.Triangle)){
+            //Creates points of the triangle
+            Point pBegining = new Point((int)coordinateX, (int)bottom);
+            Point pRightBottom = new Point((int)right, (int)bottom);
+            Point pTop = new Point((int)coordinateX, (int)top);
+            Point pLeftBottom = new Point((int)left, (int)bottom);
+
+            Path path = new Path();
+            //Move to middle of the triangle at the bottom
+            path.moveTo(pBegining.x, pBegining.y);
+            //Draw the bottom line
+            path.lineTo(pRightBottom.x, pRightBottom.y);
+            //Draw through top
+            path.lineTo(pTop.x, pTop.y);
+            //Complete by drawing through bottom
+            path.lineTo(pLeftBottom.x, pLeftBottom.y);
+            path.close();
+
+            canvas.drawPath(path, fillPaint);
+            canvas.drawPath(path, strokePaint);
         }else{
             canvas.drawCircle(coordinateX, coordinateY, calculatedSize, fillPaint);
             canvas.drawCircle(coordinateX, coordinateY, calculatedSize, strokePaint);
@@ -262,7 +283,10 @@ public class FadingIndicator extends View implements ViewPager.OnPageChangeListe
                 mShape = Shapes.Circle;
                 break;
             case 1:
-                mShape = Shapes.Rectangle;
+                mShape = Rectangle;
+                break;
+            case 2:
+                mShape = Triangle;
                 break;
             default:
                 mShape = Shapes.Circle;
