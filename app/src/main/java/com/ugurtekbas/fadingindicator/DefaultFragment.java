@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.ugurtekbas.fadingindicatorlibrary.FadingIndicator;
 import com.ugurtekbas.fadingindicatorlibrary.PageChangedListener;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -23,8 +23,8 @@ import butterknife.ButterKnife;
 public class DefaultFragment extends Fragment implements PageChangedListener{
 
     private DefaultAdapter adapter;
-    @Bind(R.id.viewpagerDefault) ViewPager viewpagerDefault;
-    @Bind(R.id.circleIndicator) FadingIndicator indicator;
+    @BindView(R.id.viewpagerDefault) ViewPager viewpagerDefault;
+    @BindView(R.id.circleIndicator) FadingIndicator indicator;
 
     @Override
     public void onAttach(Context context) {

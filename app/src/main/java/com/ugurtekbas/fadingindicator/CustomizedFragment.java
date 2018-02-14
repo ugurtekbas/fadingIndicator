@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.ugurtekbas.fadingindicatorlibrary.FadingIndicator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -21,8 +21,8 @@ import butterknife.ButterKnife;
 public class CustomizedFragment extends Fragment {
 
     private CustomizedAdapter adapter;
-    @Bind(R.id.viewpagerCustomized) ViewPager viewpagerCustomized;
-    @Bind(R.id.circleIndicator) FadingIndicator indicator;
+    @BindView(R.id.viewpagerCustomized) ViewPager viewpagerCustomized;
+    @BindView(R.id.circleIndicator) FadingIndicator indicator;
 
     @Override
     public void onAttach(Context context) {
