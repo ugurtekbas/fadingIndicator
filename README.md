@@ -75,7 +75,7 @@ public void onPageFlipped(int pageIndex) {
 
 ```
 <H2>License</H2>
-    Copyright 2017 Ugur Tekbas
+    Copyright 2018 Ugur Tekbas
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

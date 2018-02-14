@@ -25,7 +25,7 @@ public class CustomizedFragment extends Fragment {
     private Unbinder unbinder;
 
     @BindView(R.id.viewpagerCustomized) ViewPager viewpagerCustomized;
-    @BindView(R.id.circleIndicator) FadingIndicator indicator;
+    @BindView(R.id.squareIndicator) FadingIndicator indicator;
 
     @Override
     public void onAttach(Context context) {

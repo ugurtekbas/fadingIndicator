@@ -43,7 +43,7 @@ public class DefaultFragment extends Fragment implements PageChangedListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView =  inflater.inflate(R.layout.fragment_default, null);
-        ButterKnife.bind(this, fragmentView);
+        unbinder = ButterKnife.bind(this, fragmentView);
 
         int[] pics = {
                 R.mipmap.pic1,
