@@ -15,6 +15,7 @@ import com.ugurtekbas.fadingindicatorlibrary.PageChangedListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Fragment to use default state of indicators.
@@ -23,6 +24,8 @@ import butterknife.ButterKnife;
 public class DefaultFragment extends Fragment implements PageChangedListener{
 
     private DefaultAdapter adapter;
+    private Unbinder unbinder;
+
     @BindView(R.id.viewpagerDefault) ViewPager viewpagerDefault;
     @BindView(R.id.circleIndicator) FadingIndicator indicator;
 
@@ -60,5 +63,11 @@ public class DefaultFragment extends Fragment implements PageChangedListener{
     @Override
     public void onPageFlipped(int pageIndex) {
         Log.i("Page is flipped ", "page index:"+ pageIndex);
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 }

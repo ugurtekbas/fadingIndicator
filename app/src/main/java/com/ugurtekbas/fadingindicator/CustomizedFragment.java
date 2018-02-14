@@ -13,6 +13,7 @@ import com.ugurtekbas.fadingindicatorlibrary.FadingIndicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Fragment to use customized indicators.
@@ -21,6 +22,8 @@ import butterknife.ButterKnife;
 public class CustomizedFragment extends Fragment {
 
     private CustomizedAdapter adapter;
+    private Unbinder unbinder;
+
     @BindView(R.id.viewpagerCustomized) ViewPager viewpagerCustomized;
     @BindView(R.id.circleIndicator) FadingIndicator indicator;
 
@@ -38,7 +41,7 @@ public class CustomizedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView =  inflater.inflate(R.layout.fragment_customized, null);
-        ButterKnife.bind(this, fragmentView);
+        unbinder = ButterKnife.bind(this, fragmentView);
 
         int[] pics = {
                 R.mipmap.pic5,
@@ -53,5 +56,11 @@ public class CustomizedFragment extends Fragment {
         indicator.setViewPager(viewpagerCustomized);
 
         return fragmentView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 }
